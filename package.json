@@ -1,0 +1,31 @@
+{
+  "name": "oi-problems",
+  "version": "1.0.0",
+  "description": "本项目旨在收录尽可能多的信息学奥赛试题，以便 OIer 检索。",
+  "main": "index.ts",
+  "scripts": {
+    "compile": "tsc",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Molmin/oi-problems.git"
+  },
+  "keywords": [
+    "oi",
+    "problem"
+  ],
+  "author": "Milmon <milmon@qq.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Molmin/oi-problems/issues"
+  },
+  "homepage": "https://github.com/Molmin/oi-problems#readme",
+  "devDependencies": {
+    "@types/superagent": "^8.1.6",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "superagent": "^8.1.2"
+  }
+}
