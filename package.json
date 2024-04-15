@@ -22,10 +22,14 @@
   },
   "homepage": "https://github.com/Molmin/oi-problems#readme",
   "devDependencies": {
+    "@types/adm-zip": "^0.5.5",
+    "@types/fs-extra": "^11.0.4",
     "@types/superagent": "^8.1.6",
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "adm-zip": "^0.5.12",
+    "fs-extra": "^11.2.0",
     "superagent": "^8.1.2"
   }
 }
