@@ -1,10 +1,11 @@
 import superagent from 'superagent'
-import { downloadFile, formatSample } from './src/lib'
+import { downloadFile, formatSample, solveMultiLimits } from './src/lib'
 import fs from 'node:fs'
-import { ensureDirSync } from 'fs-extra'
 import { createGunzip } from 'zlib'
+import { Problem } from './src/model/problem'
+import { System } from './src/model/system'
 
-ensureDirSync('tmp')
+System.init()
 
 function unzip(from: string, to: string) {
     const readStream = fs.createReadStream(from)
@@ -18,19 +19,19 @@ function unzip(from: string, to: string) {
 }
 
 async function main() {
-    // console.info('Downloading problem set from luogu')
-    // await downloadFile('https://cdn.luogu.com.cn/problemset-open/latest.ndjson.gz', 'tmp/luogu.gz')
-    // console.info('Extracting files')
-    // await unzip('tmp/luogu.gz', 'tmp/luogu.ndjson')
+    console.info('Downloading problem set from luogu')
+    await downloadFile('https://cdn.luogu.com.cn/problemset-open/latest.ndjson.gz', 'tmp/luogu.gz')
+    console.info('Extracting files')
+    await unzip('tmp/luogu.gz', 'tmp/luogu.ndjson')
     const problems = fs.readFileSync('tmp/luogu.ndjson').toString()
         .split('\n').filter((line) => line.trim())
     for (let i = 0; i < problems.length; i++) {
-        console.info(`Solving problem #${i + 1}`)
         const {
-            pid, title, difficulty, fullScore, type,
+            pid, title, difficulty, fullScore,
             background, description, inputFormat, outputFormat, translation, samples, hint,
             limits, tags,
         } = JSON.parse(problems[i])
+        console.info(`Solving problem #${i + 1}`)
         let content = ''
         if (background?.trim()) content += `## 题目背景\n\n${background}\n\n`
         if (description?.trim()) content += `## 题目描述\n\n${description}\n\n`
@@ -41,7 +42,13 @@ async function main() {
             content += `\`\`\`input${sampleId + 1}\n${formatSample(samples[sampleId][0] || '')}\n\`\`\`\n\n`
             content += `\`\`\`output${sampleId + 1}\n${formatSample(samples[sampleId][1] || '')}\n\`\`\`\n\n`
         }
-        if (hint) content += `## 提示\n\n${hint}\n\n`
+        if (hint?.trim()) content += `## 提示\n\n${hint}\n\n`
+        const result = new Problem(
+            `luogu/${pid}`, title, content.trim(),
+            { time: solveMultiLimits(limits.time), memory: solveMultiLimits(limits.memory, 1024), full_score: fullScore },
+            tags, difficulty,
+        )
+        await System.addProblem(result)
     }
 }
 
