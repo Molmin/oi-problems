@@ -9,3 +9,7 @@ export function solveMultiLimits(
     if (min === max) return min * rate
     else return [min * rate, max * rate]
 }
+
+export function sleep(time: number) {
+    return new Promise((resolve) => setTimeout(resolve, time))
+}

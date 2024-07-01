@@ -1,13 +1,16 @@
 import { ensureDirSync } from 'fs-extra'
 import { Problem } from './problem'
+import { Fetcher } from './fetch'
 
 const problems: Problem[] = []
 
-export class System {
-    static init() {
+export class Context {
+    fetcher: Fetcher = new Fetcher()
+
+    init() {
         ensureDirSync('tmp')
         ensureDirSync('db')
     }
 
-    static addProblem(problem: Problem) { }
+    async addProblem(problem: Problem) { }
 }
