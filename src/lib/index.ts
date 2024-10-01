@@ -1,5 +1,10 @@
+import { readFileSync } from 'node:fs'
+import PdfParse from 'pdf-parse'
+
 export * from './download'
 export * from './sample'
+
+export type File = Buffer | string
 
 export function solveMultiLimits(
     limits: number[], rate = 1,
@@ -12,4 +17,9 @@ export function solveMultiLimits(
 
 export function sleep(time: number) {
     return new Promise((resolve) => setTimeout(resolve, time))
+}
+
+export async function readPDF(file: File): Promise<string> {
+    const original = typeof file === 'string' ? readFileSync(file) : file
+    return (await PdfParse(original)).text
 }

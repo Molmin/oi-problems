@@ -1,4 +1,4 @@
-export type File = Buffer | string
+import { File } from '../lib'
 
 export class Problem {
     constructor(
