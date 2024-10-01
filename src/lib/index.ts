@@ -21,5 +21,8 @@ export function sleep(time: number) {
 
 export async function readPDF(file: File): Promise<string> {
     const original = typeof file === 'string' ? readFileSync(file) : file
-    return (await PdfParse(original)).text
+    let result = '';
+    try { result = (await PdfParse(original)).text }
+    catch (e: any) { result = `ERROR: ${e.message || 'Unknown Error'}` }
+    return result
 }
